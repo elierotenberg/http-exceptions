@@ -5,6 +5,7 @@ class HTTPError extends Error {
     let { code, desc } = opts;
     this.httpCode = code || this.httpCode;
     this.httpDesc = desc || this.httpDesc;
+    this.message = message;
   }
 }
 
