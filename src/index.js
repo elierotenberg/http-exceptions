@@ -11,6 +11,15 @@ const TooManyRequests = HTTPError.extend(429, 'Too Many Requests', 'TooManyReque
 const InternalServerError = HTTPError.extend(500, 'Internal Server Error', 'InternalServerError');
 const ServiceUnavailable = HTTPError.extend(503, 'Service Unavailable', 'ServiceUnavailable');
 
+function forward(res, err) {
+  _.dev(() => res.should.be.an.Object &&
+    res.status.should.be.a.Function &&
+    res.json.should.be.a.Function &&
+    err.should.be.an.instanceOf(HTTPError)
+  );
+  res.status(err.getStatusCode()).json({ code: err.getStatusCode(), err: err.getStatusText(), reason: err.getReason() });
+}
+
 module.exports = {
   HTTPError,
 
@@ -22,4 +31,6 @@ module.exports = {
 
   InternalServerError,
   ServiceUnavailable,
+
+  forward,
 };
