@@ -1,3 +1,4 @@
+const _ = require('lodash-next');
 const HTTPError = require('./HTTPError');
 
 // 4XX Client Errors

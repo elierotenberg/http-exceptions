@@ -3,8 +3,8 @@ const _ = require('lodash-next');
 class HTTPError extends Error {
   constructor(message, opts = {}) {
     let { statusCode, statusText } = opts;
-    this.statusCode = code || this.statusCode;
-    this.statusText = desc || this.statusText;
+    this.statusCode = statusCode || this.statusCode;
+    this.statusText = statusText || this.statusText;
     this.message = message;
   }
 
@@ -29,9 +29,10 @@ _.extend(HTTPError.prototype, {
 
 _.extend(HTTPError, {
   extend(statusCode, statusText, name) {
-    _.dev(() => code.should.be.a.Number && desc.should.be.a.String);
+    _.dev(() => statusCode.should.be.a.Number && statusText.should.be.a.String);
     class SpecificHTTPError extends HTTPError {}
     _.extend(SpecificHTTPError.prototype, { statusCode, statusText, name });
+    return SpecificHTTPError;
   },
 });
 
