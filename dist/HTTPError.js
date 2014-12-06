@@ -1,10 +1,5 @@
 "use strict";
 
-var _classProps = function (child, staticProps, instanceProps) {
-  if (staticProps) Object.defineProperties(child, staticProps);
-  if (instanceProps) Object.defineProperties(child.prototype, instanceProps);
-};
-
 var _extends = function (child, parent) {
   child.prototype = Object.create(parent.prototype, {
     constructor: {
@@ -31,26 +26,17 @@ var HTTPError = (function (Error) {
 
   _extends(HTTPError, Error);
 
-  _classProps(HTTPError, null, {
-    getStatusCode: {
-      writable: true,
-      value: function () {
-        return this.statusCode;
-      }
-    },
-    getStatusText: {
-      writable: true,
-      value: function () {
-        return this.statusText;
-      }
-    },
-    getReason: {
-      writable: true,
-      value: function () {
-        return this.message;
-      }
-    }
-  });
+  HTTPError.prototype.getStatusCode = function () {
+    return this.statusCode;
+  };
+
+  HTTPError.prototype.getStatusText = function () {
+    return this.statusText;
+  };
+
+  HTTPError.prototype.getReason = function () {
+    return this.message;
+  };
 
   return HTTPError;
 })(Error);
@@ -65,18 +51,18 @@ _.extend(HTTPError, {
     _.dev(function () {
       return statusCode.should.be.a.Number && statusText.should.be.a.String;
     });
-    var _SpecificHTTPError = (function (HTTPError) {
-      var _SpecificHTTPError = function _SpecificHTTPError() {
+    var SpecificHTTPError = (function (HTTPError) {
+      var SpecificHTTPError = function SpecificHTTPError() {
         HTTPError.apply(this, arguments);
       };
 
-      _extends(_SpecificHTTPError, HTTPError);
+      _extends(SpecificHTTPError, HTTPError);
 
-      return _SpecificHTTPError;
+      return SpecificHTTPError;
     })(HTTPError);
 
-    _.extend(_SpecificHTTPError.prototype, { statusCode: statusCode, statusText: statusText, name: name });
-    return _SpecificHTTPError;
+    _.extend(SpecificHTTPError.prototype, { statusCode: statusCode, statusText: statusText, name: name });
+    return SpecificHTTPError;
   } });
 
 module.exports = HTTPError;
