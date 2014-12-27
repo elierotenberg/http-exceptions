@@ -1,7 +1,7 @@
 "use strict";
 
-var _extends = function (child, parent) {
-  child.prototype = Object.create(parent.prototype, {
+var _inherits = function (child, parent) {
+  child.prototype = Object.create(parent && parent.prototype, {
     constructor: {
       value: child,
       enumerable: false,
@@ -9,37 +9,33 @@ var _extends = function (child, parent) {
       configurable: true
     }
   });
-  child.__proto__ = parent;
+  if (parent) child.__proto__ = parent;
 };
 
-require("6to5/polyfill");var Promise = (global || window).Promise = require("lodash-next").Promise;var __DEV__ = (process.env.NODE_ENV !== "production");var __PROD__ = !__DEV__;var __BROWSER__ = (typeof window === "object");var __NODE__ = !__BROWSER__;var _ = require("lodash-next");
+require("6to5/polyfill");var Promise = (global || window).Promise = require("lodash-next").Promise;var __DEV__ = process.env.NODE_ENV !== "production";var __PROD__ = !__DEV__;var __BROWSER__ = typeof window === "object";var __NODE__ = !__BROWSER__;var _ = require("lodash-next");
 
-var HTTPError = (function (Error) {
-  var HTTPError = function HTTPError(message, opts) {
-    if (opts === undefined) opts = {};
-    var statusCode = opts.statusCode;
-    var statusText = opts.statusText;
-    this.statusCode = statusCode || this.statusCode;
-    this.statusText = statusText || this.statusText;
-    this.message = message;
-  };
+var HTTPError = function HTTPError(message, opts) {
+  if (opts === undefined) opts = {};
+  var statusCode = opts.statusCode;
+  var statusText = opts.statusText;
+  this.statusCode = statusCode || this.statusCode;
+  this.statusText = statusText || this.statusText;
+  this.message = message;
+};
 
-  _extends(HTTPError, Error);
+_inherits(HTTPError, Error);
 
-  HTTPError.prototype.getStatusCode = function () {
-    return this.statusCode;
-  };
+HTTPError.prototype.getStatusCode = function () {
+  return this.statusCode;
+};
 
-  HTTPError.prototype.getStatusText = function () {
-    return this.statusText;
-  };
+HTTPError.prototype.getStatusText = function () {
+  return this.statusText;
+};
 
-  HTTPError.prototype.getReason = function () {
-    return this.message;
-  };
-
-  return HTTPError;
-})(Error);
+HTTPError.prototype.getReason = function () {
+  return this.message;
+};
 
 _.extend(HTTPError.prototype, {
   statusCode: null,
@@ -51,15 +47,13 @@ _.extend(HTTPError, {
     _.dev(function () {
       return statusCode.should.be.a.Number && statusText.should.be.a.String;
     });
-    var SpecificHTTPError = (function (HTTPError) {
-      var SpecificHTTPError = function SpecificHTTPError() {
+    var SpecificHTTPError = function SpecificHTTPError() {
+      if (HTTPError) {
         HTTPError.apply(this, arguments);
-      };
+      }
+    };
 
-      _extends(SpecificHTTPError, HTTPError);
-
-      return SpecificHTTPError;
-    })(HTTPError);
+    _inherits(SpecificHTTPError, HTTPError);
 
     _.extend(SpecificHTTPError.prototype, { statusCode: statusCode, statusText: statusText, name: name });
     return SpecificHTTPError;
